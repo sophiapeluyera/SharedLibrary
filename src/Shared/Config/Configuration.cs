@@ -12,16 +12,14 @@ public static class Configuration
     {
         return appConfiguration == null ?
             appConfiguration = LoadAppConfiguration() : appConfiguration;
-        }
+    }
 
     private static StringDictionary LoadAppConfiguration()
     {
         var cfg = new StringDictionary();
         var basePath = Directory.GetCurrentDirectory();
-        var deploymentMode = Environment.GetEnvironmentVariable(
-            "DEPLOYMENT_MODE") ?? "development";
-        var paths = new string[] { "appsettings.cfg",
-            $"appsettings.{deploymentMode}.cfg" };
+        var deploymentMode = Environment.GetEnvironmentVariable("DEPLOYMENT_MODE") ?? "development";
+        var paths = new string[] { "appsettings.cfg", $"appsettings.{deploymentMode}.cfg" }; //reads these configurations from enviornment variables
 
         foreach (var path in paths)
         {
@@ -31,12 +29,12 @@ public static class Configuration
             {
                 var tmp = LoadConfigurationFile(file);
 
-                foreach (string k in tmp.Keys) { cfg[k] = tmp[k]; }
+                foreach (string k in tmp.Keys) { cfg[k] = tmp[k]; } //adds it to global configuration
             }
         }
 
         return cfg;
-      }
+    }
 
     public static StringDictionary LoadConfigurationFile(string file)
     {
@@ -56,7 +54,7 @@ public static class Configuration
         }
 
         return cfg;
-      }
+    }
 
     public static string? Get(string key)
     {
@@ -101,6 +99,7 @@ public static class Configuration
             return (T)Convert.ChangeType(value, targetType,
                 CultureInfo.InvariantCulture);
         }
+
         catch
         {
             return val;
