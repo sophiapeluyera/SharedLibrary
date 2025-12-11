@@ -36,24 +36,24 @@ public class HttpRouter
     }   
  
   public HttpRouter MapGet(string path, params HttpMiddleware[] middlewares) 
-  { 
-    return Map("GET", path, middlewares);
-  } 
- 
-  public HttpRouter MapPost(string path, params HttpMiddleware[] middlewares) 
-  { 
-    return Map("POST", path, middlewares); 
-  } 
- 
-  public HttpRouter MapPut(string path, params HttpMiddleware[] middlewares) 
-  { 
-    return Map("PUT", path, middlewares); 
-  } 
- 
-  public HttpRouter MapDelete(string path, params HttpMiddleware[] middlewares) 
-  { 
-    return Map("DELETE", path, middlewares); 
-  }
+    { 
+        return Map("GET", path, middlewares);
+    } 
+    
+    public HttpRouter MapPost(string path, params HttpMiddleware[] middlewares) 
+    { 
+        return Map("POST", path, middlewares); 
+    } 
+    
+    public HttpRouter MapPut(string path, params HttpMiddleware[] middlewares) 
+    { 
+        return Map("PUT", path, middlewares); 
+    } 
+    
+    public HttpRouter MapDelete(string path, params HttpMiddleware[] middlewares) 
+    { 
+        return Map("DELETE", path, middlewares); 
+    }
 
     public async Task HandleContextAsync(HttpListenerContext ctx) //extracts request and gives resppone to HandleAsync
     { 
@@ -102,11 +102,11 @@ public class HttpRouter
         Func<Task> next = () => Task.CompletedTask; 
         next = async () => 
         { 
-        index++; 
-        if (index < middlewares.Count && res.StatusCode == RESPONSE_NOT_SENT) 
-        { 
-        await middlewares[index](req, res, props, next); 
-        } 
+            index++; 
+            if (index < middlewares.Count && res.StatusCode == RESPONSE_NOT_SENT) 
+            { 
+              await middlewares[index](req, res, props, next); 
+            } 
         }; 
         return next; 
     } 
@@ -127,8 +127,7 @@ public class HttpRouter
         { 
             if(req.HttpMethod == method && string.Equals(req.Url!.AbsolutePath, basePath + path)) 
             { 
-                Func<Task> routeMiddlewarePipeline = 
-                GenerateMiddlewarePipeline(req, res, props, middlewares.ToList()); 
+                Func<Task> routeMiddlewarePipeline = GenerateMiddlewarePipeline(req, res, props, middlewares.ToList()); 
         
                 await routeMiddlewarePipeline(); 
         
@@ -149,8 +148,7 @@ public class HttpRouter
             { 
                 props["req.params"] = parameters; 
         
-                Func<Task> routeMiddlewarePipeline =  
-                GenerateMiddlewarePipeline(req, res, props, middlewares.ToList()); 
+                Func<Task> routeMiddlewarePipeline = GenerateMiddlewarePipeline(req, res, props, middlewares.ToList()); 
         
                 await routeMiddlewarePipeline(); 
         
